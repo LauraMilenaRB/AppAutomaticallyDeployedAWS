@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  AppDeployedAWS:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: AppDeployedAWS
+    ports:
+      - 8080:8080
