@@ -1,9 +1,9 @@
 #!/bin/bash
   #1. Crea la llave .pem para generar la conexión.
-	aws ec2 create-key-pair --key-name claveAppWebAWS --query 'KeyMaterial' --output text > claveAppWebAWS.pem
+	aws ec2 create-key-pair --key-name claveAppWebAWS --key-type rsa --query 'KeyMaterial' --output text > claveAppWebAWS.pem
 	chmod 400 claveAppWebAWS.pem
 	#2. Crea el grupo de seguridad.
-	aws ec2 create-security-group --group-name sg-AppWebAWS --description "Security Group AppWebAWS" --vpc-id vpc-2c361a56
+	aws ec2 create-security-group --group-name sg-AppWebAWS --description "Security Group AppWebAWS" --vpc-id vpc-061ecbba81df61159
 	#3. Añade los permisos al grupo de seguridad para recibir conexiones y peticiones sobre los puertos 22 y 8080.
 	aws ec2 authorize-security-group-ingress --group-name sg-AppWebAWS --protocol tcp --port 8080 --cidr 0.0.0.0/0
 	aws ec2 authorize-security-group-ingress --group-name sg-AppWebAWS --protocol tcp --port 22 --cidr 0.0.0.0/0
@@ -21,5 +21,5 @@
       ssh -i "claveAppWebAWS.pem" ec2-user@$dns "sudo yum install -y docker"
       ssh -i "claveAppWebAWS.pem" ec2-user@$dns "sudo usermod -a -G docker ec2-user"
       ssh -i "claveAppWebAWS.pem" ec2-user@$dns "sudo service docker start"
-      ssh -i "claveAppWebAWS.pem" ec2-user@$dns "docker run -d -p 8080:8080 --name AppDeployedAWS lauramilenarb/AppDeployedAWS"
+      ssh -i "claveAppWebAWS.pem" ec2-user@$dns "docker run -d -p 8080:8080 --name appdeployed_aws lauramilenarb/appdeployed_aws"
     done
